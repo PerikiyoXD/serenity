@@ -4,20 +4,44 @@ Visual Studio Code does not work optimally for Serenity development, and there's
 
 The WSL Remote extension allows you to use VSCode in Windows while using the normal WSL workflow. This works surprisingly well, but for code comprehension speed you should put the Serenity directory on your WSL root partition.
 
-## Code comprehension
+- [Visual Studio Code Project Configuration](#visual-studio-code-project-configuration)
+  - [Code comprehension](#code-comprehension)
+    - [clangd](#clangd)
+    - [Microsoft C/C++ tools](#microsoft-cc-tools)
+  - [DSL syntax highlighting](#dsl-syntax-highlighting)
+  - [Formatting](#formatting)
+  - [Settings](#settings)
+  - [Customization](#customization)
+    - [Custom Tasks](#custom-tasks)
+    - [License snippet](#license-snippet)
 
-Both C++ comprehension tools listed below report fake errors.
+## Code comprehension
 
 ### clangd
 
-The official clangd extension can be used for C++ comprehension. You'll have to use the following .clangd:
+The clangd extension (`llvm-vs-code-extensions.vscode-clangd`) can be used for C++ comprehension. 
+
+You'll have to use the following `.clangd`:
 
 ```yaml
 CompileFlags:
+  Add: 
+  [
+    -D__serenity__=1,
+    -I../../Toolchain/Local/i686/i686-pc-serenity/include/c++/11.2.0,
+    -I../../Toolchain/Local/i686/i686-pc-serenity/include/c++/11.2.0/backward,
+    -I../../Toolchain/Local/i686/i686-pc-serenity/include/c++/11.2.0/bits,
+    -I../../Toolchain/Local/i686/i686-pc-serenity/include/c++/11.2.0/debug,
+    -I../../Toolchain/Local/i686/i686-pc-serenity/include/c++/11.2.0/experimental,
+    -I../../Toolchain/Local/i686/i686-pc-serenity/include/c++/11.2.0/ext,
+    -I../../Toolchain/Local/i686/i686-pc-serenity/include/c++/11.2.0/i686-pc-serenity,
+    -I../../Toolchain/Local/i686/i686-pc-serenity/include/c++/11.2.0/i686-pc-serenity/bits,
+    -I../../Toolchain/Local/i686/i686-pc-serenity/include/c++/11.2.0/i686-pc-serenity/ext
+  ]
   CompilationDatabase: Build/i686
 ```
 
-Run cmake at least once for this to work. clangd has difficulty finding specific methods and types, especially with inheritance trees. Also, include errors are wrong in 90% of cases.
+Run cmake at least once for this to work.
 
 ### Microsoft C/C++ tools
 
@@ -90,7 +114,7 @@ These extensions can be used as-is, but you need to point them to the custom Ser
 
 Most nonsentical errors from the extension also involve not finding methods, types etc.
 
-### DSL syntax highlighting
+## DSL syntax highlighting
 
 There's a syntax highlighter extension for both IPC and GML called "SerenityOS DSL Syntax Highlight", available [here](https://marketplace.visualstudio.com/items?itemName=kleinesfilmroellchen.serenity-dsl-syntaxhighlight) or [here](https://open-vsx.org/extension/kleinesfilmroellchen/serenity-dsl-syntaxhighlight).
 
